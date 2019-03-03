@@ -1,0 +1,23 @@
+{
+  "disabled": false,
+  "tracing": {
+    "consoleLevel": "verbose"
+  },
+  "bindings": [
+    {
+      "type": "httpTrigger",
+      "authLevel": "function",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    }
+  ]
+}

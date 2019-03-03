@@ -1,0 +1,62 @@
+const { readAsJson } = require('../src/data')
+const { toRestrictionsFromHighways, parseShortDate, toRestrictionsFromRoads23 } = require('../src/converters')
+
+var assert = require('assert')
+describe('Data Loading', function () {
+    it('JSON should be loaded', function () {
+        let json = readAsJson(__dirname, 'data', 'highways_single.json')
+        assert.notEqual(json, null)
+    });
+});
+
+describe('Highway - Data conversion', function () {
+    it('LineString coordinates', function () {
+        let json = readAsJson(__dirname, 'data', 'highways_single.json')
+        let restrictions = toRestrictionsFromHighways(json)
+        assert.equal(restrictions.length, 1)
+        assert.equal(restrictions[0].type, 'D')
+    });
+    it('MultiLineString coordinates', function () {
+        let json = readAsJson(__dirname, 'data', 'highways_single.1.json')
+        let restrictions = toRestrictionsFromHighways(json)
+        assert.equal(restrictions.length, 1)
+        assert.equal(restrictions[0].coordinates.length, 8)
+        assert.equal(restrictions[0].type, 'D')
+    });
+});
+
+describe('R2&R3 - Data conversion', function () {
+    it('LineString coordinates', function () {
+        let json = readAsJson(__dirname, 'data', 'roads23-single.json')
+        let restrictions = toRestrictionsFromRoads23(json)
+        assert.equal(restrictions.length, 1)
+        assert.equal(restrictions[0].type, 'R23')
+    });
+    it('parseShortDate MM/YYYYY', function () {
+        let date0 = parseShortDate('10/2016')
+        assert.equal(date0.getMonth(), 9)
+        assert.equal(date0.getFullYear(), 2016)
+        let date1 = parseShortDate('05/2016')
+        assert.equal(date1.getMonth(), 4)
+        assert.equal(date1.getFullYear(), 2016)
+    });
+    it('parseShortDate M.YY', function () {
+        let date0 = parseShortDate('10/16')
+        assert.equal(date0.getMonth(), 9)
+        assert.equal(date0.getFullYear(), 2016)
+    });
+    it('parseShortDate D.M.YYYY', function () {
+        let date2 = parseShortDate('2.5.2016')
+        assert.equal(date2.getDate(), 2)
+        assert.equal(date2.getMonth(), 4)
+        assert.equal(date2.getFullYear(), 2016)
+    });
+    it('parseShortDate 6 - 11/2016', function () {
+        let date2 = parseShortDate('6 - 11/2016')
+        assert.equal(date2.getDate(), 1)
+        assert.equal(date2.getMonth(), 5)
+        assert.equal(date2.getFullYear(), 2016)
+    });
+});
+
+

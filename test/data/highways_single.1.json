@@ -1,0 +1,149 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "geometry": {
+                "type": "MultiLineString",
+                "coordinates": [
+                    [
+                        [
+                            15.8179852,
+                            48.9053253
+                        ],
+                        [
+                            15.8178991,
+                            48.9054535
+                        ],
+                        [
+                            15.8178665,
+                            48.905554
+                        ],
+                        [
+                            15.817885,
+                            48.9056129
+                        ],
+                        [
+                            15.8179765,
+                            48.9057415
+                        ]
+                    ],
+                    [
+                        [
+                            15.8179765,
+                            48.9057415
+                        ],
+                        [
+                            15.8180293,
+                            48.9058056
+                        ],
+                        [
+                            15.8182189,
+                            48.9059925
+                        ]
+                    ],
+                    [
+                        [
+                            15.8182189,
+                            48.9059925
+                        ],
+                        [
+                            15.8184975,
+                            48.9063031
+                        ]
+                    ],
+                    [
+                        [
+                            15.8186642,
+                            48.9064551
+                        ],
+                        [
+                            15.8189303,
+                            48.9066875
+                        ],
+                        [
+                            15.8193218,
+                            48.9069378
+                        ]
+                    ],
+                    [
+                        [
+                            15.8184975,
+                            48.9063031
+                        ],
+                        [
+                            15.8186642,
+                            48.9064551
+                        ]
+                    ],
+                    [
+                        [
+                            15.8194235,
+                            48.9070116
+                        ],
+                        [
+                            15.819552,
+                            48.9070896
+                        ]
+                    ],
+                    [
+                        [
+                            15.8193218,
+                            48.9069378
+                        ],
+                        [
+                            15.8194235,
+                            48.9070116
+                        ]
+                    ],
+                    [
+                        [
+                            15.819552,
+                            48.9070896
+                        ],
+                        [
+                            15.820245,
+                            48.9074612
+                        ],
+                        [
+                            15.8203478,
+                            48.9075363
+                        ],
+                        [
+                            15.8203932,
+                            48.907607
+                        ],
+                        [
+                            15.8203756,
+                            48.907826
+                        ],
+                        [
+                            15.8203322,
+                            48.908067
+                        ],
+                        [
+                            15.8203957,
+                            48.9083267
+                        ]
+                    ]
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "AlertC3Desc": null,
+                "Description": "ulice B\u00edtovsk\u00e1, v obci Vranov nad Dyj\u00ed, okr. Znojmo, uzav\u0159eno, Od 15.10.2016 00:00 Do 31.12.2018 23:59, \u00dapln\u00e1 uzav\u00edrka m\u00edstn\u00ed komunikace (hr\u00e1z Vranovsk\u00e9 p\u0159ehrady) z d\u016fvodu prov\u00e1d\u011bn\u00ed stavebn\u00edch prac\u00ed \"VD Vranov-rekonstrukce koruny hr\u00e1ze v\u010d. pr\u016fzkumu a je\u0159\u00e1",
+                "OBJECTID": 5774,
+                "ValidTo": 1546300740000,
+                "ddrType": "CURRENT",
+                "IconNumber": "2",
+                "ROAD_ID": 1608456,
+                "ChainageTo": null,
+                "LocalityDesc": "ulice B\u00edtovsk\u00e1, v obci Vranov nad Dyj\u00ed, okr. Znojmo",
+                "AlertC2Desc": null,
+                "ChainageFrom": null,
+                "RN": null,
+                "ValidFrom": 1476489600000,
+                "AlertC1Desc": "uzav\u0159eno"
+            }
+        }
+    ]
+}

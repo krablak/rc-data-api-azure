@@ -1,0 +1,143 @@
+<html>
+
+<head>
+    <title>RC Data Check</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet-src.js" crossorigin=""></script>
+</head>
+
+<body>
+    <div id="mapid" style="width: 100%; height: 100%;"></div>
+</body>
+<script>
+    (function () {
+        const yearTime = 31536000000;
+        let nowTime = new Date().getTime();
+
+        let onReady = fn => {
+            if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+        };
+
+        let loadData = () => {
+            return fetch('/api/rcdataapihttptrigger?code=/ygS6ekb3RHXwfdjWhK8Gx8qpufme95zsaxNfieYnB9Jaiea3xdCaA==', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: '{\n' +
+                        'closures(validFrom: 0, validTo: 1580511600000) {\n' +
+                        'type\n' +
+                        'description\n' +
+                        'validFrom\n' +
+                        'validTo\n' +
+                        'coordinates {lat lng}\n' +
+                        '}\n' +
+                        '}'
+                })
+            }).then(r => r.json());
+        };
+
+        let toGeoJson = data => {
+            return {
+                "type": "FeatureCollection",
+                "features": data.data.closures.map(item => {
+                    return {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "MultiLineString",
+                            "coordinates": item.coordinates.map(coord => {
+                                if (coord.map) {
+                                    return coord.map(citem => [citem.lng, citem.lat])
+                                } else {
+                                    return [coord.lng, coord.lat];
+                                }
+                            })
+                        },
+                        "properties": {
+                            "desc": item.description,
+                            "from": item.validFrom,
+                            "to": item.validTo,
+                            "type": item.type
+                        }
+                    };
+                })
+            }
+        };
+
+        let toUIDateStr = dateInt => {
+            if (dateInt) {
+                let date = new Date(dateInt);
+                return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            } else {
+                return '--';
+            }
+        }
+
+        let onEachFeature = (feature, layer) => {
+            var popupContent = "<p>";
+            if (feature.properties && feature.properties) {
+                if (feature.properties.type) {
+                    popupContent += `<h4>${feature.properties.type}</h4>`;
+                }
+                popupContent += `<p>Od: ${toUIDateStr(feature.properties.from)} Do: ${toUIDateStr(feature.properties.to)}</p>`;
+                if (feature.properties.desc) {
+                    popupContent += `<p>${feature.properties.desc}</p>`;
+                }
+            }
+            popupContent += "</p>";
+
+            layer.bindPopup(popupContent);
+        }
+
+        let toColor = feature => {
+            let color = '#A0AFA1';
+            if (feature.properties.type) {
+                if ('D' === feature.properties.type) {
+                    color = '#00973F';
+                } else if ('R1' === feature.properties.type) {
+                    color = '#3D6ABC';
+                } else if ('R23' === feature.properties.type) {
+                    color = '#C18656';
+                }
+            }
+            return color;
+        };
+
+        let style = feature => {
+            return {
+                color: toColor(feature),
+                weight: 5,
+                opacity: (feature.properties.to && feature.properties.to >= nowTime) ? 1 : 0.2
+            };
+        }
+
+        onReady(() => {
+            let map = L.map('mapid').setView([49.409975, 14.7142834], 7);
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                id: 'mapbox.light'
+            }).addTo(map);
+
+            loadData().then(data => toGeoJson(data)).then(geoJson => {
+                console.log(geoJson);
+
+                L.geoJSON(geoJson, {
+                    style: style,
+                    onEachFeature: onEachFeature
+                }).addTo(map);
+
+            });
+        });
+    })();
+</script>
+
+</html>
